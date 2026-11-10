@@ -1,0 +1,25 @@
+/* The 1920x1080 slide. Used by index.html (TV / website) and the manager preview. */
+.screen{position:fixed;top:0;left:0;right:0;bottom:0;background:#000;overflow:hidden}
+.stage{position:absolute;left:0;top:0;width:1920px;height:1080px;-webkit-transform-origin:0 0;transform-origin:0 0;background:#3a0808;color:#fff;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;padding:30px 70px 36px;box-sizing:border-box}
+.stage .hd{display:grid;grid-template-columns:190px 1fr 190px;align-items:center;height:150px;-webkit-flex:none;flex:none}
+.stage .hd h1{font-size:64px;margin:0;text-align:center;font-weight:700;line-height:1.1;color:#fff}
+.stage .hd p{font-size:34px;margin:6px 0 0;text-align:center;line-height:1.1}
+.stage .hd img{max-height:140px;max-width:180px;object-fit:contain;justify-self:center}
+.stage .beers{-webkit-flex:1;flex:1;display:grid;grid-template-columns:1fr 1fr;grid-column-gap:70px;column-gap:70px;align-content:start;padding-top:20px;min-height:0}
+.stage .brow{display:-webkit-flex;display:flex;justify-content:space-between;align-items:center}
+.stage .bl{min-width:0;-webkit-flex:1;flex:1}
+.stage .name{font-weight:500;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.stage .sub{color:#e6bd7c;line-height:1.2;white-space:nowrap}
+.stage .abv{white-space:nowrap;font-variant-numeric:tabular-nums;margin-left:20px;-webkit-flex:none;flex:none}
+.stage .nl{display:-webkit-flex;display:flex;align-items:center;min-width:0}
+.stage .new{-webkit-flex:none;flex:none;margin-left:16px;background:#e6bd7c;color:#3a0808;font-weight:700;text-transform:uppercase;letter-spacing:.06em;border-radius:999px;padding:.12em .8em;line-height:1.3;white-space:nowrap}
+.stage .sep{border-top:3px solid #fff;-webkit-flex:none;flex:none}
+.stage .bottom{display:-webkit-flex;display:flex;height:260px;padding-top:16px;-webkit-flex:none;flex:none}
+.stage .grp{-webkit-flex:1;flex:1;min-width:0}
+.stage .grp+.grp{margin-left:70px}
+.stage .ghd{display:-webkit-flex;display:flex;align-items:center;height:70px;border-bottom:2px solid rgba(255,255,255,.7);margin-bottom:8px}
+.stage .ghd img{max-height:64px;max-width:260px;object-fit:contain;margin-right:26px}
+.stage .wm{font-family:Georgia,"Times New Roman",serif;font-size:50px;color:#d8c46a;font-weight:700;white-space:nowrap;margin-right:26px}
+.stage .gsub{font-size:34px}
+.stage .loading{font-size:40px;text-align:center;margin-top:300px;color:#e6bd7c}
+.pv{position:relative;width:100%;border-radius:8px;overflow:hidden;background:#000}

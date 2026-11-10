@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>McMillin Farm Brewhouse Tap List</title>
+<link rel="stylesheet" href="slide.css">
+<style>html,body{margin:0;padding:0;background:#000;overflow:hidden}</style>
+</head>
+<body>
+<div class="screen"><div class="stage" id="stage"><div class="loading">Loading tap list&hellip;</div></div></div>
+<script src="slide.js"></script>
+<script>
+(function () {
+  var POLL_MS = 60 * 1000;          // look for a new tap list every minute
+  var REDRAW_MS = 10 * 60 * 1000;   // also redraw every 10 minutes so "New on tap" tags expire on their own
+  var stage = document.getElementById('stage');
+  var lastText = '', data = null, lastDraw = 0;
+
+  function draw() {
+    if (!data) return;
+    stage.innerHTML = Slide.stageHTML(data);
+    Slide.fitFull(stage);
+    lastDraw = Date.now();
+  }
+  function load() {
+    var x = new XMLHttpRequest();
+    x.open('GET', 'data.json?t=' + Date.now(), true);
+    x.onload = function () {
+      if (x.status !== 200) return;       // keep showing what is already on screen
+      try {
+        if (x.responseText !== lastText) {
+          data = JSON.parse(x.responseText);
+          lastText = x.responseText;
+          draw();
+        } else if (Date.now() - lastDraw > REDRAW_MS) {
+          draw();
+        }
+      } catch (e) { /* bad data: keep the current screen */ }
+    };
+    x.send();
+  }
+  window.addEventListener('resize', function () { Slide.fitFull(stage); });
+  Slide.fitFull(stage);
+  load();
+  setInterval(load, POLL_MS);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Tap List">
+<title>Tap List Manager</title>
+<link rel="stylesheet" href="slide.css">
+<style>
+:root{--bg:#f6f3ee;--card:#fff;--text:#1f1a17;--muted:#6f655e;--border:#ddd5cb;--accent:#8f2418;--accent-text:#fff;--warn:#b45309;--ok:#1d6b3a;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#171311;--card:#241e1b;--text:#f1ebe5;--muted:#a79c93;--border:#3b322d;--accent:#c4432f;--accent-text:#fff;--warn:#f59e0b;--ok:#5bc489}}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+button,input{font:inherit;color:inherit}
+.m{max-width:680px;margin:0 auto;padding:14px 14px 110px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.top h1{font-size:20px;margin:0}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin-bottom:14px}
+.tab{flex:none;padding:9px 14px;border-radius:999px;border:1px solid var(--border);background:var(--card);cursor:pointer;font-size:14px}
+.tab.on{background:var(--accent);border-color:var(--accent);color:var(--accent-text)}
+h2{font-size:15px;margin:18px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.r{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--border)}
+.r:last-child{border-bottom:0}
+.rw{border-bottom:1px solid var(--border)}
+.rw:last-child{border-bottom:0}
+.rw .r{border-bottom:0}
+.grow{flex:1;min-width:0}
+.grow b{display:block;font-weight:600}
+.small{font-size:13px;color:var(--muted)}
+.muted{color:var(--muted)}
+.lnk{border:0;background:none;color:var(--accent);padding:3px 0;font-size:13px;cursor:pointer;display:block}
+.btn{border:1px solid var(--border);background:var(--card);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:14px}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-text);font-weight:600}
+.btn.warn{border-color:var(--warn);color:var(--warn)}
+.btn.sq{padding:8px 10px;min-width:38px}
+.btn[disabled]{opacity:.5}
+label.f{display:block;font-size:13px;color:var(--muted);margin:8px 0 3px}
+input[type=text],input[type=search],input[type=password]{width:100%;padding:10px 11px;border:1px solid var(--border);border-radius:9px;background:var(--bg);font-size:16px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.det{padding:0 0 12px}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));background:var(--card);border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;justify-content:center}
+.bar .btn.pri{flex:1;max-width:420px;padding:12px}
+.logo-prev{max-height:48px;max-width:160px;object-fit:contain;background:#3a0808;border-radius:6px;padding:4px}
+.msg{padding:10px 12px;border-radius:10px;border:1px solid var(--warn);color:var(--warn);margin-bottom:10px;font-size:14px}
+.msg.ok{border-color:var(--ok);color:var(--ok)}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="slide.js"></script>
+<script src="manager.js"></script>
+</body>
+</html>
