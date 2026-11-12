@@ -170,13 +170,13 @@
   {
    "id": "b28",
    "name": "America 250",
-   "style": "",
+   "style": "American amber ale",
    "note": ""
   },
   {
    "id": "b29",
    "name": "McMillin Ultra",
-   "style": "",
+   "style": "Light beer",
    "note": ""
   },
   {
@@ -188,13 +188,13 @@
   {
    "id": "b31",
    "name": "Amber Rojo",
-   "style": "",
+   "style": "Red lager",
    "note": ""
   },
   {
    "id": "b32",
    "name": "Gettin’ Figgy With It",
-   "style": "",
+   "style": "Amber made with fresh figs",
    "note": ""
   },
   {
@@ -212,7 +212,7 @@
   {
    "id": "b35",
    "name": "Hard Seltzer",
-   "style": "Hard Seltzer",
+   "style": "Better than white claw",
    "note": ""
   }
  ],
@@ -265,6 +265,11 @@
    "id": "b27",
    "abv": "6.5",
    "since": "2026-11-11T17:25:40.127Z"
+  },
+  {
+   "id": "b20",
+   "abv": "5.0",
+   "since": "2026-11-12T03:31:07.871Z"
   }
  ],
  "groups": [
@@ -309,5 +314,5 @@
    ]
   }
  ],
- "updated": "2026-11-12T03:28:36.133Z"
+ "updated": "2026-11-12T03:31:07.871Z"
 }
