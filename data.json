@@ -6,6 +6,12 @@
  },
  "beers": [
   {
+   "id": "b6ndww2",
+   "name": "Vanilla Cream Ale",
+   "style": "Lager",
+   "note": "Smooth and creamy with vanilla notes"
+  },
+  {
    "id": "b01",
    "name": "Novemberfest",
    "style": "Amber Lager",
@@ -234,10 +240,6 @@
    "abv": "5.3"
   },
   {
-   "id": "b32",
-   "abv": "7.5"
-  },
-  {
    "id": "b35",
    "abv": "6.0"
   },
@@ -275,6 +277,11 @@
    "id": "b07",
    "abv": "10",
    "since": "2026-11-14T00:58:56.211Z"
+  },
+  {
+   "id": "b6ndww2",
+   "abv": "6",
+   "since": "2026-11-19T21:41:20.071Z"
   }
  ],
  "groups": [
@@ -319,5 +326,5 @@
    ]
   }
  ],
- "updated": "2026-11-14T00:58:56.211Z"
+ "updated": "2026-11-19T21:41:20.071Z"
 }
