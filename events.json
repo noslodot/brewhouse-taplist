@@ -126,26 +126,26 @@
   },
   {
    "id": "e-hotsauce-20270724",
-   "title": "Seventh Annual Washington State Hot Sauce Festival",
+   "title": "Seventh Annual Washington State Hot Sauce Festival — Day One",
    "date": "2027-07-24",
    "start": "11:00",
    "end": "18:00",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "McMillin Farm Brewhouse",
-   "cost": "",
-   "desc": "Two-day festival: Saturday July 24 and Sunday July 25.\nAll details at wahotsauce.com.",
+   "cost": "Free",
+   "desc": "Free admission, parking and entertainment.\nTwo-day festival: Saturday July 24 and Sunday July 25.\nAll details at wahotsauce.com.",
    "img": ""
   },
   {
    "id": "e-hotsauce-20270725",
-   "title": "Seventh Annual Washington State Hot Sauce Festival",
+   "title": "Seventh Annual Washington State Hot Sauce Festival — Day Two",
    "date": "2027-07-25",
    "start": "11:00",
    "end": "17:00",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "McMillin Farm Brewhouse",
-   "cost": "",
-   "desc": "Two-day festival: Saturday July 24 and Sunday July 25.\nAll details at wahotsauce.com.",
+   "cost": "Free",
+   "desc": "Free admission, parking and entertainment.\nTwo-day festival: Saturday July 24 and Sunday July 25.\nAll details at wahotsauce.com.",
    "img": ""
   },
   {
@@ -156,8 +156,8 @@
    "end": "18:00",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Celebrate HARVEST",
-   "cost": "",
-   "desc": "General admission is 12–6 PM, with VIP early access at 11 AM.",
+   "cost": "Paid admission",
+   "desc": "General admission is 12–6 PM, with VIP early access at 11 AM.\nInfo and tickets at www.southsoundbrewersfest.com.",
    "img": ""
   },
   {
@@ -173,5 +173,5 @@
    "img": ""
   }
  ],
- "updated": "2026-11-20T07:50:04.000Z"
+ "updated": "2026-11-20T07:59:54.000Z"
 }
