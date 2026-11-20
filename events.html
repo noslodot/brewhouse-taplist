@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Upcoming Events | McMillin Farm Brewhouse</title>
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1000px;margin:0 auto;padding:20px 16px 28px}
+.title{margin:0;text-align:center;font-size:26px;line-height:1.15;font-weight:700}
+.lede{margin:5px 0 14px;text-align:center;font-size:15px;color:#e6bd7c}
+.mh{margin:20px 0 6px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e6bd7c;border-bottom:2px solid rgba(255,255,255,.55);padding-bottom:6px}
+.list{display:grid;grid-template-columns:minmax(0,1fr);column-gap:16px;align-items:start}
+@media (min-width:760px){.list{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.list .ev{margin:4px 0}.list .ev:only-child{grid-column:1 / -1}.list .desc.clamp{-webkit-line-clamp:6}}
+.ev{display:flex;gap:12px;padding:14px 12px;margin:4px -12px;border-radius:12px;min-width:0}
+.ev.alt{background:rgba(255,255,255,.16)}
+.date{flex:none;align-self:flex-start;width:54px;text-align:center;border:2px solid #e6bd7c;border-radius:10px;padding:4px 0 6px;line-height:1.05}
+.date .w,.date .m{font-size:11px;letter-spacing:.08em;color:#e6bd7c;font-weight:700}
+.date .d{font-size:25px;font-weight:700}
+.body{flex:1;min-width:0}
+.t{font-size:19px;font-weight:700;line-height:1.2;overflow-wrap:anywhere;text-wrap:balance}
+.when{margin-top:3px;font-size:14px;color:#e6bd7c}
+.meta{margin-top:5px;display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:rgba(230,189,124,.2);color:#f6dfb4;border-radius:13px;font-size:12px;line-height:1.3;padding:3px 10px;max-width:100%;overflow-wrap:anywhere;text-wrap:balance}
+.chip.free{background:#e6bd7c;color:#3a0808;font-weight:700}
+.desc{margin-top:8px;font-size:15px;line-height:1.4;color:#f6ede7;white-space:pre-line;overflow-wrap:anywhere;text-wrap:pretty}
+.desc.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.more{background:none;border:0;color:#e6bd7c;padding:8px 0 2px;font:inherit;font-size:14px;text-decoration:underline;white-space:nowrap;cursor:pointer}
+.poster{flex:none;display:block;width:92px;height:92px;border-radius:8px;object-fit:cover}
+@media (min-width:760px){.poster{width:110px;height:110px}}
+.msg{padding:30px 0;text-align:center;color:#e6bd7c;font-size:17px}
+.upd{margin-top:22px;text-align:center;font-size:12px;color:rgba(255,255,255,.6)}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap"><div class="msg">Loading events&hellip;</div></div>
+<script src="events-lib.js"></script>
+<script>
+(function () {
+  var POLL_MS = 2 * 60 * 1000;
+  var EMBED = /[?&]embed=1(&|$)/.test(location.search);   // embed=1 hides the big title (the website supplies its own heading)
+  var wrap = document.getElementById('wrap');
+  var L = window.EventsLib, esc = L.esc;
+  var lastText = '', data = null;
+
+  function card(ev, alt, place) {
+    var dp = L.dateParts(ev.date), when = L.fmtRange(ev.start, ev.end);
+    var chips = '';
+    if (ev.cost) chips += '<span class="chip' + (/^free$/i.test(ev.cost) ? ' free' : '') + '">' + esc(ev.cost) + '</span>';
+    if (ev.host) chips += '<span class="chip">Hosted by ' + esc(ev.host) + '</span>';
+    if (ev.place && ev.place !== place) chips += '<span class="chip">' + esc(ev.place) + '</span>';
+    return '<div class="ev' + (alt ? ' alt' : '') + '">' +
+      '<div class="date"><div class="w">' + dp.dow + '</div><div class="d">' + dp.day + '</div><div class="m">' + dp.mon3 + '</div></div>' +
+      '<div class="body"><div class="t">' + esc(ev.title) + '</div>' +
+      (when ? '<div class="when">' + esc(when) + '</div>' : '') +
+      (chips ? '<div class="meta">' + chips + '</div>' : '') +
+      (ev.desc ? '<div class="desc clamp">' + esc(ev.desc) + '</div>' : '') + '</div>' +
+      (ev.img ? '<a href="' + esc(ev.img) + '" target="_blank" rel="noopener"><img class="poster" loading="lazy" src="' + esc(ev.img) + '" alt="Poster for ' + esc(ev.title) + '"></a>' : '') +
+      '</div>';
+  }
+
+  function html(d) {
+    var now = L.pacificNow();
+    var up = L.sortEvents(d.events.filter(function (e) { return !L.isPast(e, now); }));
+    var out = '';
+    if (!EMBED) out += '<h1 class="title">' + esc(d.settings.title) + '</h1>';
+    if (d.settings.place) out += '<p class="lede"' + (EMBED ? ' style="margin-top:0"' : '') + '>' + esc(d.settings.place) + '</p>';
+    if (!up.length) return out + '<div class="msg">No upcoming events right now. Please check back soon.</div>';
+
+    var thisYear = parseInt(now.date.slice(0, 4), 10), i = 0;
+    var groups = [];
+    up.forEach(function (ev) {
+      var dp = L.dateParts(ev.date), g = groups[groups.length - 1];
+      if (!g || g.key !== dp.monthKey) { g = { key: dp.monthKey, name: dp.month + (dp.year !== thisYear ? ' ' + dp.year : ''), items: [] }; groups.push(g); }
+      g.items.push(ev);
+    });
+    groups.forEach(function (g) {
+      out += '<div class="mh">' + esc(g.name) + '</div><div class="list">';
+      g.items.forEach(function (ev) { out += card(ev, i++ % 2 === 1, d.settings.place); });
+      out += '</div>';
+    });
+    if (d.updated) {
+      var t = new Date(d.updated);
+      if (!isNaN(t.getTime())) out += '<div class="upd">Updated ' + esc(t.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })) + '</div>';
+    }
+    return out;
+  }
+
+  /* Tell a page that embeds us how tall we are, so it can size the frame (optional on their side). */
+  function postHeight() {
+    try {
+      if (window.parent && window.parent !== window) window.parent.postMessage({ type: 'events-height', height: document.body.offsetHeight }, '*');
+    } catch (e) {}
+  }
+  function addMoreButtons() {
+    var els = wrap.querySelectorAll('.desc.clamp');
+    for (var i = 0; i < els.length; i++) {
+      if (els[i].parentNode.querySelector('.more')) continue;
+      if (els[i].scrollHeight > els[i].clientHeight + 1) {
+        var b = document.createElement('button');
+        b.className = 'more'; b.type = 'button'; b.textContent = 'More'; b.setAttribute('aria-expanded', 'false');
+        els[i].parentNode.appendChild(b);
+      }
+    }
+  }
+  wrap.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('.more') : null;
+    if (!b) return;
+    var desc = b.parentNode.querySelector('.desc');
+    var open = desc.classList.toggle('clamp') === false;
+    b.textContent = open ? 'Less' : 'More';
+    b.setAttribute('aria-expanded', open ? 'true' : 'false');
+    postHeight();
+  });
+
+  function draw() {
+    if (!data) return;
+    wrap.innerHTML = html(data);
+    addMoreButtons();
+    postHeight();
+  }
+  function load() {
+    var x = new XMLHttpRequest();
+    x.open('GET', 'events.json?t=' + Date.now(), true);
+    x.onload = function () {
+      if (x.status !== 200) { if (!data) wrap.innerHTML = '<div class="msg">Could not load the events. Please try again in a moment.</div>'; return; }
+      try {
+        if (x.responseText !== lastText) { data = L.cleanData(JSON.parse(x.responseText)); lastText = x.responseText; }
+        draw();   // redraw each time so events drop off by themselves once they are over
+      } catch (e) { if (!data) wrap.innerHTML = '<div class="msg">Could not load the events. Please try again in a moment.</div>'; }
+    };
+    x.onerror = function () { if (!data) wrap.innerHTML = '<div class="msg">Could not load the events. Please check your connection.</div>'; };
+    x.send();
+  }
+  window.addEventListener('resize', function () { addMoreButtons(); postHeight(); });
+  load();
+  setInterval(load, POLL_MS);
+})();
+</script>
+</body>
+</html>

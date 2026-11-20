@@ -1,0 +1,57 @@
+{
+ "settings": {
+  "title": "Upcoming Events",
+  "place": "McMillin Farm, 12517 WA-162, Puyallup"
+ },
+ "events": [
+  {
+   "id": "e-bingo-20261121",
+   "title": "Rock ’n’ Roll Bingo — 90s Music Night",
+   "date": "2026-11-21",
+   "start": "17:00",
+   "end": "19:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Collective",
+   "cost": "",
+   "desc": "Test your music knowledge and enjoy some nostalgic hits.",
+   "img": ""
+  },
+  {
+   "id": "e-paint-20261122",
+   "title": "Paint & Sip with Artvana",
+   "date": "2026-11-22",
+   "start": "15:00",
+   "end": "17:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Collective",
+   "cost": "",
+   "desc": "Get creative and enjoy an afternoon of painting.",
+   "img": ""
+  },
+  {
+   "id": "e-karaoke-20261128",
+   "title": "Family-Friendly Karaoke",
+   "date": "2026-11-28",
+   "start": "16:00",
+   "end": "20:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Collective",
+   "cost": "",
+   "desc": "Round up the family and end the month singing along with us!",
+   "img": ""
+  },
+  {
+   "id": "e-market-20261205",
+   "title": "McMillin Farm European Holiday Market",
+   "date": "2026-12-05",
+   "start": "11:00",
+   "end": "17:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "Celebrate HARVEST",
+   "cost": "Free",
+   "desc": "Free admission, free parking and free entertainment. Bring the whole family!\nThis year’s theme is Italy, and you can come vote on next year’s country.\n12 vendors of Christmas will be selling great holiday gifts.\nThe Tahoma Troupe, a hand bell group, will perform holiday music.\nKrampus and Santa & Mrs. Claus will be there for photo ops.\nThe Brewhouse will be open for all your beverage needs.\nThree fully decorated Christmas trees and three weekend getaway packages will be raffled off to support Celebrate HARVEST again this year.\nCome enjoy this affordable family event and get into the Christmas spirit.",
+   "img": "events-img/market-2026.jpg"
+  }
+ ],
+ "updated": "2026-11-19T18:00:00.000Z"
+}
