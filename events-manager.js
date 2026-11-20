@@ -99,7 +99,7 @@
   }
   function cleanOut(d) {   // the data as it will be saved: no blank events, no temporary fields
     var o = clone(d);
-    o.events = o.events.filter(function (e) { return !isBlank(e); }).map(function (e) { delete e._img; delete e._new; return e; });
+    o.events = o.events.filter(function (e) { return !isBlank(e); }).map(function (e) { delete e._img; delete e._new; if (!e.featured) delete e.featured; return e; });
     return o;
   }
   function snap(d) { var o = cleanOut(d); delete o.updated; return JSON.stringify(o); }
@@ -134,7 +134,7 @@
     return src ? '<img class="thumb ' + (cls || '') + '" src="' + esc(src) + '" alt="">' : '';
   }
   function cardHTML(e, past) {
-    return '<div class="card"><div class="r">' + thumbHTML(e) + '<div class="grow"><b>' + esc(e.title || '(no name yet)') + '</b><span class="small">' + esc(whenText(e)) + '</span></div>' +
+    return '<div class="card"><div class="r">' + thumbHTML(e) + '<div class="grow"><b>' + esc(e.title || '(no name yet)') + '</b><span class="small">' + esc(whenText(e)) + (e.featured ? ' \u00b7 Featured' : '') + '</span></div>' +
       (past ? '<button class="btn" data-act="copy" data-id="' + esc(e.id) + '">Copy</button>' : '') +
       '<button class="btn" data-act="edit" data-id="' + esc(e.id) + '">Edit</button></div></div>';
   }
@@ -153,7 +153,8 @@
     draft.events.forEach(function (e) { if (isBlank(e)) return; (L.validDate(e.date) && L.isPast(e, now) ? past : up).push(e); });
     up = L.sortEvents(up.map(function (e) { return e; }));
     past = L.sortEvents(past).reverse();
-    root.innerHTML = '<div class="m"><div class="top"><h1>Events</h1><span style="display:flex;gap:6px"><a class="btn" href="events.html">View page</a><button class="btn pri" data-act="add">+ Add event</button></span></div>' +
+    root.innerHTML = '<div class="m"><div class="top"><h1>Events</h1><button class="btn pri" data-act="add">+ Add event</button></div>' +
+      '<p class="links"><a class="btn" href="manage.html" data-act="taplist">Tap list</a><a class="btn" href="events.html">View page</a></p>' +
       statusHTML() +
       '<h2>Coming up (' + up.length + ')</h2>' +
       (up.length ? up.map(function (e) { return cardHTML(e, false); }).join('') : '<p class="help">Nothing coming up. Tap + Add event.</p>') +
@@ -174,6 +175,7 @@
       '<label class="f" for="f-host">Hosted by</label><input class="in" type="text" id="f-host" data-f="host" list="hosts" value="' + esc(e.host) + '">' +
       '<datalist id="hosts"><option value="McMillin Farm Collective"><option value="McMillin Farm Brewhouse"><option value="Celebrate HARVEST"></datalist>' +
       '<label class="f" for="f-cost">Cost (leave blank if not stated)</label><input class="in" type="text" id="f-cost" data-f="cost" value="' + esc(e.cost) + '" placeholder="Free, $10, ...">' +
+      '<label class="chk" for="f-featured"><input type="checkbox" id="f-featured" data-f="featured"' + (e.featured ? ' checked' : '') + '><span>Featured McMillin Farm event<br><span class="small">Shown larger, across the whole row. Use for Hot Sauce Fest, Brewers Fest and the Holiday Market.</span></span></label>' +
       '<label class="f" for="f-desc">Details</label><textarea class="in" id="f-desc" data-f="desc">' + esc(e.desc) + '</textarea>' +
       '<label class="f">Photo</label><div class="r" id="photo-row">' + photoRowHTML(e) + '</div>' +
       (isNew ? '' : '<p style="margin:18px 0 0"><button class="btn warn" data-act="delete" data-id="' + esc(e.id) + '">Delete this event</button></p>') +
@@ -257,6 +259,7 @@
     if (a === 'setup') { view = 'setup'; status = ''; render(); return; }
     if (a === 'cancelsetup') { view = 'list'; status = ''; render(); return; }
     if (a === 'retry') { pull(); return; }
+    if (a === 'taplist') { if (isDirty() && !window.confirm('You have event changes that are not saved. Leave without saving?')) ev.preventDefault(); return; }
     if (a === 'savecfg') {
       var o = document.getElementById('cfg-owner').value.trim(), r = document.getElementById('cfg-repo').value.trim(), t = document.getElementById('cfg-token').value.trim();
       if (!o || !r || !t) { status = 'Fill in all three boxes.'; statusKind = 'warn'; render(); return; }
@@ -294,7 +297,7 @@
   root.addEventListener('input', function (ev) {
     var f = ev.target && ev.target.dataset && ev.target.dataset.f; if (!f) return;
     var e = byId(editId); if (!e) return;
-    e[f] = ev.target.value;
+    e[f] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
     if (status) { status = ''; var m = root.querySelector('.msg'); if (m) m.remove(); }
     refreshBar();
   });

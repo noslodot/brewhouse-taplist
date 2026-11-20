@@ -13,10 +13,13 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
 .lede{margin:5px 0 14px;text-align:center;font-size:15px;color:#e6bd7c}
 .mh{margin:20px 0 6px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e6bd7c;border-bottom:2px solid rgba(255,255,255,.55);padding-bottom:6px}
 .list{display:grid;grid-template-columns:minmax(0,1fr);column-gap:16px;align-items:start}
-@media (min-width:760px){.list{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.list .ev{margin:4px 0}.list .ev:only-child{grid-column:1 / -1}.list .desc.clamp{-webkit-line-clamp:6}}
+@media (min-width:760px){.list{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.list .ev{margin:4px 0}.list .ev.feat{margin:12px 0}.list .ev:only-child{grid-column:1 / -1}.list .desc.clamp{-webkit-line-clamp:6}.list .feat .t{font-size:30px}.list .feat .date{width:78px}.list .feat .date .d{font-size:38px}.list .ev.feat{grid-template-columns:78px minmax(0,1fr) auto;grid-template-areas:"date body poster" "date desc poster"}.list .feat .poster{width:230px}}
 .ev{display:flex;gap:12px;padding:14px 12px;margin:4px -12px;border-radius:12px;min-width:0}
 .ev.alt{background:rgba(255,255,255,.16)}
 .date{flex:none;align-self:flex-start;width:54px;text-align:center;border:2px solid #e6bd7c;border-radius:10px;padding:4px 0 6px;line-height:1.05}
+.datecol{flex:none;align-self:flex-start;display:flex;flex-direction:column;align-items:center;gap:6px;width:54px}
+.datecol .date{align-self:center}
+.daylabel{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#e6bd7c;white-space:nowrap}
 .date .w,.date .m{font-size:11px;letter-spacing:.08em;color:#e6bd7c;font-weight:700}
 .date .d{font-size:25px;font-weight:700}
 .body{flex:1;min-width:0}
@@ -27,8 +30,23 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
 .chip.free{background:#e6bd7c;color:#3a0808;font-weight:700}
 .desc{margin-top:8px;font-size:15px;line-height:1.4;color:#f6ede7;white-space:pre-line;overflow-wrap:anywhere;text-wrap:pretty}
 .desc.clamp{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.desc a{color:#f3cf8e;text-decoration:underline;text-underline-offset:2px}
 .more{background:none;border:0;color:#e6bd7c;padding:8px 0 2px;font:inherit;font-size:14px;text-decoration:underline;white-space:nowrap;cursor:pointer}
 .poster{flex:none;display:block;width:92px;height:92px;border-radius:8px;object-fit:cover}
+/* Featured McMillin Farm events: bigger, and always the whole row */
+.ev.feat{grid-column:1 / -1;display:grid;grid-template-columns:66px minmax(0,1fr);grid-template-areas:"date body" "desc desc" "poster poster";gap:12px 16px;margin:12px 0;padding:18px 16px;border:2px solid #e6bd7c;border-radius:16px;background:linear-gradient(135deg,rgba(230,189,124,.26),rgba(230,189,124,.09))}
+.feat .datecol{grid-area:date;width:auto}
+.feat .body{grid-area:body}
+.feat .fdesc{grid-area:desc;margin-top:0}
+.feat .date{width:66px;padding:6px 0 8px}
+.feat .date .d{font-size:32px}
+.feat .eyebrow{margin-bottom:4px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e6bd7c}
+.feat .t{font-size:24px;line-height:1.15}
+.feat .when{margin-top:5px;font-size:16px}
+.feat .meta{margin-top:8px}
+.feat .desc{font-size:16px}
+.feat .poster-link{grid-area:poster;display:block}
+.feat .poster{width:100%;max-width:340px;height:auto;aspect-ratio:1 / 1}
 @media (min-width:760px){.poster{width:110px;height:110px}}
 .msg{padding:30px 0;text-align:center;color:#e6bd7c;font-size:17px}
 .upd{margin-top:22px;text-align:center;font-size:12px;color:rgba(255,255,255,.6)}
@@ -45,25 +63,38 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
   var L = window.EventsLib, esc = L.esc;
   var lastText = '', data = null;
 
+  /* Website addresses typed into the details become tappable links. Runs on text that is already escaped, and
+     only ever matches plain address characters, so it cannot create anything but a link to that address. */
+  var LINK_RE = /\b((?:https?:\/\/)?(?:www\.)?[a-z0-9][a-z0-9-]*(?:\.[a-z0-9-]+)*\.(?:com|org|net|us|co|io|info)\b(?:\/[A-Za-z0-9._~:\/?#@!$()*+,;=%-]*)?)/gi;
+  function linkify(s) {
+    return s.replace(LINK_RE, function (m) {
+      var tail = (m.match(/[.,;:!?)]+$/) || [''])[0], addr = tail ? m.slice(0, -tail.length) : m;
+      return '<a href="' + (/^https?:\/\//i.test(addr) ? addr : 'https://' + addr) + '" target="_blank" rel="noopener">' + addr + '</a>' + tail;
+    });
+  }
+
   function card(ev, alt, place) {
     var dp = L.dateParts(ev.date), when = L.fmtRange(ev.start, ev.end);
     var chips = '';
     if (ev.cost) chips += '<span class="chip' + (/^free$/i.test(ev.cost) ? ' free' : '') + '">' + esc(ev.cost) + '</span>';
     if (ev.host) chips += '<span class="chip">Hosted by ' + esc(ev.host) + '</span>';
     if (ev.place && ev.place !== place) chips += '<span class="chip">' + esc(ev.place) + '</span>';
-    return '<div class="ev' + (alt ? ' alt' : '') + '">' +
-      '<div class="date"><div class="w">' + dp.dow + '</div><div class="d">' + dp.day + '</div><div class="m">' + dp.mon3 + '</div></div>' +
-      '<div class="body"><div class="t">' + esc(ev.title) + '</div>' +
+    var feat = !!ev.featured;
+    return '<div class="ev' + (feat ? ' feat' : (alt ? ' alt' : '')) + '">' +
+      '<div class="datecol"><div class="date"><div class="w">' + dp.dow + '</div><div class="d">' + dp.day + '</div><div class="m">' + dp.mon3 + '</div></div>' +
+      (ev.dayLabel ? '<div class="daylabel">' + esc(ev.dayLabel) + '</div>' : '') + '</div>' +
+      '<div class="body">' + (feat ? '<div class="eyebrow">McMillin Farm featured event</div>' : '') + '<div class="t">' + esc(ev.title) + '</div>' +
       (when ? '<div class="when">' + esc(when) + '</div>' : '') +
       (chips ? '<div class="meta">' + chips + '</div>' : '') +
-      (ev.desc ? '<div class="desc clamp">' + esc(ev.desc) + '</div>' : '') + '</div>' +
-      (ev.img ? '<a href="' + esc(ev.img) + '" target="_blank" rel="noopener"><img class="poster" loading="lazy" src="' + esc(ev.img) + '" alt="Poster for ' + esc(ev.title) + '"></a>' : '') +
+      (ev.desc && !feat ? '<div class="desc clamp">' + linkify(esc(ev.desc)) + '</div>' : '') + '</div>' +
+      (ev.desc && feat ? '<div class="desc fdesc">' + linkify(esc(ev.desc)) + '</div>' : '') +
+      (ev.img ? '<a class="poster-link" href="' + esc(ev.img) + '" target="_blank" rel="noopener"><img class="poster" loading="lazy" src="' + esc(ev.img) + '" alt="Poster for ' + esc(ev.title) + '"></a>' : '') +
       '</div>';
   }
 
   function html(d) {
     var now = L.pacificNow();
-    var up = L.sortEvents(d.events.filter(function (e) { return !L.isPast(e, now); }));
+    var up = L.labelDays(L.sortEvents(d.events)).filter(function (e) { return !L.isPast(e, now); });
     var out = '';
     if (!EMBED) out += '<h1 class="title">' + esc(d.settings.title) + '</h1>';
     if (d.settings.place) out += '<p class="lede"' + (EMBED ? ' style="margin-top:0"' : '') + '>' + esc(d.settings.place) + '</p>';
@@ -78,7 +109,7 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
     });
     groups.forEach(function (g) {
       out += '<div class="mh">' + esc(g.name) + '</div><div class="list">';
-      g.items.forEach(function (ev) { out += card(ev, i++ % 2 === 1, d.settings.place); });
+      g.items.forEach(function (ev) { out += card(ev, !ev.featured && i++ % 2 === 1, d.settings.place); });
       out += '</div>';
     });
     if (d.updated) {

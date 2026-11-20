@@ -204,7 +204,7 @@
       return;
     }
     var body = { tap: tapTab, cw: cwTab, screen: screenTab, prev: prevTab }[tab]();
-    root.innerHTML = '<div class="m"><div class="top"><h1>Tap list manager</h1><span style="display:flex;gap:6px"><a class="btn" href="index.html" style="text-decoration:none">View screen</a><button class="btn" data-act="setup">Setup</button></span></div>' +
+    root.innerHTML = '<div class="m"><div class="top" style="flex-wrap:wrap"><h1>Tap list manager</h1><span style="display:flex;gap:6px;flex-wrap:wrap"><a class="btn" href="index.html" style="text-decoration:none">View screen</a><button class="btn" data-act="events">Events</button><button class="btn" data-act="setup">Setup</button></span></div>' +
       statusHTML() + tabsHTML() + body + '</div><div class="bar" id="bar">' + barHTML() + '</div>';
     fit();
     if (focusId) { var f = document.getElementById('abv-' + focusId); focusId = null; if (f) f.focus(); }
@@ -260,6 +260,7 @@
     if (a === 'setup') { view = 'setup'; status = ''; render(); return; }
     if (a === 'cancelsetup') { view = 'main'; status = ''; render(); return; }
     if (a === 'retry') { pull(); return; }
+    if (a === 'events') { if (dirty && !window.confirm('You have tap list changes that are not saved. Leave without saving?')) return; location.href = 'events-manage.html'; return; }
     if (a === 'forget') { clearCfg(); cfg = null; S = null; status = 'Access key removed from this browser.'; statusKind = 'ok'; render(); return; }
     if (a === 'savecfg') {
       var o = document.getElementById('cfg-owner').value.trim(), r = document.getElementById('cfg-repo').value.trim(), t = document.getElementById('cfg-token').value.trim();

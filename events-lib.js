@@ -63,7 +63,8 @@
     if (!raw || typeof raw !== 'object') return null;
     var ev = {
       id: str(raw.id, 80), title: str(raw.title, 200), date: str(raw.date, 10), start: str(raw.start, 5), end: str(raw.end, 5),
-      place: str(raw.place, 200), host: str(raw.host, 120), cost: str(raw.cost, 80), desc: str(raw.desc, 4000), img: safeImg(str(raw.img, 200))
+      place: str(raw.place, 200), host: str(raw.host, 120), cost: str(raw.cost, 80), desc: str(raw.desc, 4000), img: safeImg(str(raw.img, 200)),
+      featured: raw.featured === true
     };
     if (!ev.title || !validDate(ev.date)) return null;
     if (!validTime(ev.start)) ev.start = '';
@@ -81,8 +82,23 @@
     };
   }
 
+  /* Events with the same name on consecutive days are one multi-day event: they get "Day One", "Day Two", ...
+     Pass the whole sorted list (past ones included) so a surviving day keeps its label. */
+  var DAY_WORDS = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
+  function nextDay(date) { var d = new Date(date + 'T00:00:00Z'); d.setUTCDate(d.getUTCDate() + 1); return d.toISOString().slice(0, 10); }
+  function labelDays(sorted) {
+    var i = 0;
+    while (i < sorted.length) {
+      var j = i, key = sorted[i].title.toLowerCase();
+      while (j + 1 < sorted.length && sorted[j + 1].title.toLowerCase() === key && sorted[j + 1].date === nextDay(sorted[j].date)) j++;
+      for (var k = i; k <= j; k++) sorted[k].dayLabel = j > i ? 'Day ' + (DAY_WORDS[k - i] || (k - i + 1)) : '';
+      i = j + 1;
+    }
+    return sorted;
+  }
+
   root.EventsLib = {
     esc: esc, str: str, validDate: validDate, validTime: validTime, safeImg: safeImg, pacificNow: pacificNow, isPast: isPast,
-    sortEvents: sortEvents, dateParts: dateParts, fmtRange: fmtRange, cleanEvent: cleanEvent, cleanData: cleanData
+    sortEvents: sortEvents, labelDays: labelDays, dateParts: dateParts, fmtRange: fmtRange, cleanEvent: cleanEvent, cleanData: cleanData
   };
 })(window);
