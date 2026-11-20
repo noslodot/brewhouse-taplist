@@ -13,7 +13,7 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
 .lede{margin:5px 0 14px;text-align:center;font-size:15px;color:#e6bd7c}
 .mh{margin:28px 0 8px;font-size:22px;font-weight:800;letter-spacing:.1em;text-align:center;text-transform:uppercase;color:#e6bd7c;border-bottom:2px solid rgba(255,255,255,.55);padding-bottom:8px}
 .list{display:grid;grid-template-columns:minmax(0,1fr);column-gap:16px;align-items:start}
-@media (min-width:760px){.list{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.list .ev{margin:4px 0}.list .ev.feat{margin:12px 0}.list .ev:only-child{grid-column:1 / -1}.list .desc.clamp{-webkit-line-clamp:6}.list .feat .t{font-size:30px}.list .feat .date{width:78px}.list .feat .date .d{font-size:38px}.list .ev.feat{grid-template-columns:78px minmax(0,1fr) auto;grid-template-areas:"date body poster" "date desc poster"}.list .feat .poster{width:230px}}
+@media (min-width:760px){.list{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.list .ev{margin:4px 0}.list .ev.feat{margin:12px 0}.list .ev:only-child{grid-column:1 / -1}.list .ev.alt{background:none}.list .ev.alt2{background:rgba(255,255,255,.16)}.list .desc.clamp{-webkit-line-clamp:6}.list .feat .t{font-size:30px}.list .feat .date{width:78px}.list .feat .date .d{font-size:38px}.list .ev.feat{grid-template-columns:78px minmax(0,1fr) auto;grid-template-areas:"date body poster" "date desc poster"}.list .feat .poster{width:230px}}
 .ev{display:flex;gap:12px;padding:14px 12px;margin:4px -12px;border-radius:12px;min-width:0}
 .ev.alt{background:rgba(255,255,255,.16)}
 .date{flex:none;align-self:flex-start;width:54px;text-align:center;border:2px solid #e6bd7c;border-radius:10px;padding:4px 0 6px;line-height:1.05}
@@ -73,14 +73,14 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
     });
   }
 
-  function card(ev, alt, place) {
+  function card(ev, alt, alt2, place) {
     var dp = L.dateParts(ev.date), when = L.fmtRange(ev.start, ev.end);
     var chips = '';
     if (ev.cost) chips += '<span class="chip' + (/^free$/i.test(ev.cost) ? ' free' : '') + '">' + esc(ev.cost) + '</span>';
     if (ev.host) chips += '<span class="chip">Hosted by ' + esc(ev.host) + '</span>';
     if (ev.place && ev.place !== place) chips += '<span class="chip">' + esc(ev.place) + '</span>';
     var feat = !!ev.featured;
-    return '<div class="ev' + (feat ? ' feat' : (alt ? ' alt' : '')) + '">' +
+    return '<div class="ev' + (feat ? ' feat' : (alt ? ' alt' : '') + (alt2 ? ' alt2' : '')) + '">' +
       '<div class="datecol"><div class="date"><div class="w">' + dp.dow + '</div><div class="d">' + dp.day + '</div><div class="m">' + dp.mon3 + '</div></div>' +
       (ev.dayLabel ? '<div class="daylabel">' + esc(ev.dayLabel) + '</div>' : '') + '</div>' +
       '<div class="body">' + (feat ? '<div class="eyebrow">McMillin Farm featured event</div>' : '') + '<div class="t">' + esc(ev.title) + '</div>' +
@@ -109,7 +109,16 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
     });
     groups.forEach(function (g) {
       out += '<div class="mh">' + esc(g.name) + '</div><div class="list">';
-      g.items.forEach(function (ev) { out += card(ev, !ev.featured && i++ % 2 === 1, d.settings.place); });
+      // One column (phones): shading alternates down the list (alt). Two columns (wide): it alternates across and
+      // down like a checkerboard (alt2), so every row starts on the opposite shade. Featured events, and a month's
+      // only event, take a whole row and are not shaded as cells.
+      var row = 0, col = 0, whole = g.items.length === 1;
+      g.items.forEach(function (ev) {
+        var alt = !ev.featured && i++ % 2 === 1, alt2 = false;
+        if (ev.featured || whole) { if (col === 1) { row++; col = 0; } row++; }
+        else { alt2 = (row + col) % 2 === 1; if (++col === 2) { col = 0; row++; } }
+        out += card(ev, alt, alt2, d.settings.place);
+      });
       out += '</div>';
     });
     if (d.updated) {
