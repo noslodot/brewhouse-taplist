@@ -1,5 +1,7 @@
 /* Shared helpers for the events page (events.html) and the events manager (events-manage.html).
-   Dates are plain "YYYY-MM-DD" and times plain "HH:MM", always McMillin Farm local time (Pacific). */
+   Dates are plain "YYYY-MM-DD" and times plain "HH:MM", always McMillin Farm local time (Pacific).
+   An event is one day unless it has an "endDate" later than its "date"; then it runs from date through endDate,
+   and its start/end times are the hours on each of those days. */
 (function (root) {
   var TZ = 'America/Los_Angeles';
   var DOW = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
@@ -27,9 +29,10 @@
   }
 
   /* An event is over once its end time has passed. No end time: it is over at the end of that day. */
+  function lastDay(ev) { return (ev.endDate && ev.endDate > ev.date) ? ev.endDate : ev.date; }
   function isPast(ev, now) {
     var end = (ev.end && (!ev.start || ev.end >= ev.start)) ? ev.end : '23:59';
-    return (ev.date + 'T' + end) < (now.date + 'T' + now.time);
+    return (lastDay(ev) + 'T' + end) < (now.date + 'T' + now.time);
   }
   function sortEvents(list) {
     return list.slice().sort(function (a, b) {
@@ -43,6 +46,14 @@
       dow: DOW[d.getUTCDay()], dowLong: DOW_LONG[d.getUTCDay()], day: d.getUTCDate(),
       mon3: MON3[d.getUTCMonth()], month: MONTH[d.getUTCMonth()], monthKey: date.slice(0, 7), year: d.getUTCFullYear()
     };
+  }
+  /* What the little date box shows. One day: "FRI / 9 / JUL". Several days: "FRI–SUN / 9–11 / JUL" (or "JUL–AUG"
+     when the run crosses a month). multi is true for a run, so the page can make the box's type smaller. */
+  function dateBox(ev) {
+    var a = dateParts(ev.date), end = lastDay(ev);
+    if (end === ev.date) return { w: a.dow, d: String(a.day), m: a.mon3, multi: false };
+    var b = dateParts(end);
+    return { w: a.dow + '–' + b.dow, d: a.day + '–' + b.day, m: a.mon3 + (b.mon3 !== a.mon3 ? '–' + b.mon3 : ''), multi: true };
   }
   function t12(t) {
     var h = parseInt(t.slice(0, 2), 10), m = t.slice(3, 5);
@@ -62,11 +73,12 @@
   function cleanEvent(raw) {
     if (!raw || typeof raw !== 'object') return null;
     var ev = {
-      id: str(raw.id, 80), title: str(raw.title, 200), date: str(raw.date, 10), start: str(raw.start, 5), end: str(raw.end, 5),
+      id: str(raw.id, 80), title: str(raw.title, 200), date: str(raw.date, 10), endDate: str(raw.endDate, 10), start: str(raw.start, 5), end: str(raw.end, 5),
       place: str(raw.place, 200), host: str(raw.host, 120), cost: str(raw.cost, 80), desc: str(raw.desc, 4000), img: safeImg(str(raw.img, 200)),
       featured: raw.featured === true
     };
     if (!ev.title || !validDate(ev.date)) return null;
+    if (!validDate(ev.endDate) || ev.endDate <= ev.date) ev.endDate = '';   // only a later last day makes a run
     if (!validTime(ev.start)) ev.start = '';
     if (!validTime(ev.end)) ev.end = '';
     return ev;
@@ -99,6 +111,6 @@
 
   root.EventsLib = {
     esc: esc, str: str, validDate: validDate, validTime: validTime, safeImg: safeImg, pacificNow: pacificNow, isPast: isPast,
-    sortEvents: sortEvents, labelDays: labelDays, dateParts: dateParts, fmtRange: fmtRange, cleanEvent: cleanEvent, cleanData: cleanData
+    sortEvents: sortEvents, labelDays: labelDays, dateParts: dateParts, dateBox: dateBox, lastDay: lastDay, fmtRange: fmtRange, cleanEvent: cleanEvent, cleanData: cleanData
   };
 })(window);

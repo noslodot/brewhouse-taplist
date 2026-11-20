@@ -22,6 +22,9 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
 .daylabel{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#e6bd7c;white-space:nowrap}
 .date .w,.date .m{font-size:11px;letter-spacing:.08em;color:#e6bd7c;font-weight:700}
 .date .d{font-size:25px;font-weight:700}
+.date.multi .w,.date.multi .m{font-size:9px;letter-spacing:.02em;white-space:nowrap}
+.date.multi .d{font-size:16px;white-space:nowrap}
+.feat .date.multi .d{font-size:20px}
 .body{flex:1;min-width:0}
 .t{font-size:19px;font-weight:700;line-height:1.2;overflow-wrap:anywhere;text-wrap:balance}
 .when{margin-top:3px;font-size:14px;color:#e6bd7c}
@@ -74,14 +77,15 @@ html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-sy
   }
 
   function card(ev, alt, alt2, place) {
-    var dp = L.dateParts(ev.date), when = L.fmtRange(ev.start, ev.end);
+    var box = L.dateBox(ev), when = L.fmtRange(ev.start, ev.end);
+    if (when && box.multi) when += ' each day';
     var chips = '';
     if (ev.cost) chips += '<span class="chip' + (/^free$/i.test(ev.cost) ? ' free' : '') + '">' + esc(ev.cost) + '</span>';
     if (ev.host) chips += '<span class="chip">Hosted by ' + esc(ev.host) + '</span>';
     if (ev.place && ev.place !== place) chips += '<span class="chip">' + esc(ev.place) + '</span>';
     var feat = !!ev.featured;
     return '<div class="ev' + (feat ? ' feat' : (alt ? ' alt' : '') + (alt2 ? ' alt2' : '')) + '">' +
-      '<div class="datecol"><div class="date"><div class="w">' + dp.dow + '</div><div class="d">' + dp.day + '</div><div class="m">' + dp.mon3 + '</div></div>' +
+      '<div class="datecol"><div class="date' + (box.multi ? ' multi' : '') + '"><div class="w">' + box.w + '</div><div class="d">' + box.d + '</div><div class="m">' + box.m + '</div></div>' +
       (ev.dayLabel ? '<div class="daylabel">' + esc(ev.dayLabel) + '</div>' : '') + '</div>' +
       '<div class="body">' + (feat ? '<div class="eyebrow">McMillin Farm featured event</div>' : '') + '<div class="t">' + esc(ev.title) + '</div>' +
       (when ? '<div class="when">' + esc(when) + '</div>' : '') +

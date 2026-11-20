@@ -90,7 +90,7 @@
     if (!d.settings.title) d.settings.title = 'Upcoming Events';
     if (!d.settings.place) d.settings.place = '';
     d.events = (Array.isArray(d.events) ? d.events : []).filter(function (e) { return e && typeof e === 'object'; }).map(function (e) {
-      return Object.assign({ id: newId(), title: '', date: '', start: '', end: '', place: '', host: '', cost: '', desc: '', img: '' }, e);
+      return Object.assign({ id: newId(), title: '', date: '', endDate: '', start: '', end: '', place: '', host: '', cost: '', desc: '', img: '' }, e);
     });
     return d;
   }
@@ -99,7 +99,9 @@
   }
   function cleanOut(d) {   // the data as it will be saved: no blank events, no temporary fields
     var o = clone(d);
-    o.events = o.events.filter(function (e) { return !isBlank(e); }).map(function (e) { delete e._img; delete e._new; if (!e.featured) delete e.featured; return e; });
+    o.events = o.events.filter(function (e) { return !isBlank(e); }).map(function (e) { delete e._img; delete e._new; if (!e.featured) delete e.featured;
+      if (!(L.validDate(e.endDate) && L.validDate(e.date) && e.endDate > e.date)) delete e.endDate;   // saved only for a run of several days
+      return e; });
     return o;
   }
   function snap(d) { var o = cleanOut(d); delete o.updated; return JSON.stringify(o); }
@@ -126,8 +128,9 @@
   }
   function whenText(e) {
     if (!L.validDate(e.date)) return 'No date yet';
-    var dp = L.dateParts(e.date), t = L.fmtRange(e.start, e.end);
-    return dp.dowLong + ' ' + dp.month.slice(0, 3) + ' ' + dp.day + (t ? ' · ' + t : '');
+    var dp = L.dateParts(e.date), t = L.fmtRange(e.start, e.end), s = dp.dowLong + ' ' + dp.month.slice(0, 3) + ' ' + dp.day;
+    if (L.validDate(e.endDate) && e.endDate > e.date) { var ep = L.dateParts(e.endDate); s += ' – ' + ep.dowLong + ' ' + ep.month.slice(0, 3) + ' ' + ep.day; if (t) t += ' each day'; }
+    return s + (t ? ' · ' + t : '');
   }
   function thumbHTML(e, cls) {
     var src = e._img ? e._img.dataUrl : L.safeImg(e.img);
@@ -162,15 +165,19 @@
         past.map(function (e) { return cardHTML(e, true); }).join('') + '</details>' : '') +
       '</div><div class="bar" id="bar">' + barHTML() + '</div>';
   }
+  /* The "Ends on" box shows the last day; for a one-day event that is just the start date. */
+  function endShown(e) { return L.validDate(e.date) ? (L.validDate(e.endDate) && e.endDate > e.date ? e.endDate : e.date) : ''; }
   function renderEdit() {
     var e = byId(editId);
     if (!e) { view = 'list'; render(); return; }
     var isNew = !!e._new;
     root.innerHTML = '<div class="m"><button class="x" data-act="close" aria-label="Close">&times;</button><div class="top"><h1>' + (isNew ? 'New event' : 'Edit event') + '</h1></div>' + statusHTML() +
       '<label class="f" for="f-title" style="margin-top:0">Name</label><input class="in" type="text" id="f-title" data-f="title" value="' + esc(e.title) + '">' +
-      '<div class="three"><div><label class="f" for="f-date">Date</label><input class="in" type="date" id="f-date" data-f="date" value="' + esc(L.validDate(e.date) ? e.date : '') + '"></div>' +
-      '<div><label class="f" for="f-start">Starts</label><input class="in" type="time" id="f-start" data-f="start" value="' + esc(L.validTime(e.start) ? e.start : '') + '"></div>' +
-      '<div><label class="f" for="f-end">Ends</label><input class="in" type="time" id="f-end" data-f="end" value="' + esc(L.validTime(e.end) ? e.end : '') + '"></div></div>' +
+      '<div class="two"><div><label class="f" for="f-date">Starts on</label><input class="in" type="date" id="f-date" data-f="date" value="' + esc(L.validDate(e.date) ? e.date : '') + '"></div>' +
+      '<div><label class="f" for="f-enddate">Ends on</label><input class="in" type="date" id="f-enddate" data-f="endDate" value="' + esc(endShown(e)) + '"' + (L.validDate(e.date) ? ' min="' + esc(e.date) + '"' : '') + '></div></div>' +
+      '<div class="two"><div><label class="f" for="f-start">Start time</label><input class="in" type="time" id="f-start" data-f="start" value="' + esc(L.validTime(e.start) ? e.start : '') + '"></div>' +
+      '<div><label class="f" for="f-end">End time</label><input class="in" type="time" id="f-end" data-f="end" value="' + esc(L.validTime(e.end) ? e.end : '') + '"></div></div>' +
+      '<p class="help" style="margin:6px 0 0">One day: leave "Ends on" as it is. A run of days: pick the last day, and the times are the hours each day.</p>' +
       '<label class="f" for="f-place">Place</label><input class="in" type="text" id="f-place" data-f="place" value="' + esc(e.place) + '">' +
       '<label class="f" for="f-host">Hosted by</label><input class="in" type="text" id="f-host" data-f="host" list="hosts" value="' + esc(e.host) + '">' +
       '<datalist id="hosts"><option value="McMillin Farm Collective"><option value="McMillin Farm Brewhouse"><option value="Celebrate HARVEST"></datalist>' +
@@ -266,7 +273,7 @@
       cfg = { owner: o, repo: r, token: t }; writeCfg(cfg); status = ''; pull(); return;
     }
     if (a === 'add') {
-      e = { id: newId(), title: '', date: '', start: '', end: '', place: draft.settings.place || '', host: '', cost: '', desc: '', img: '', _new: true };
+      e = { id: newId(), title: '', date: '', endDate: '', start: '', end: '', place: draft.settings.place || '', host: '', cost: '', desc: '', img: '', _new: true };
       draft.events.push(e); editId = e.id; view = 'edit'; status = ''; render();
       var f = document.getElementById('f-title'); if (f) f.focus();
       return;
@@ -274,7 +281,7 @@
     if (a === 'edit') { editId = id; view = 'edit'; status = ''; render(); return; }
     if (a === 'copy') {
       var src = byId(id); if (!src) return;
-      e = clone(src); e.id = newId(); e.date = ''; delete e._img; e._new = true;
+      e = clone(src); e.id = newId(); e.date = ''; e.endDate = ''; delete e._img; e._new = true;
       draft.events.push(e); editId = e.id; view = 'edit'; status = 'Copied. Pick the new date.'; statusKind = 'ok'; render(); return;
     }
     if (a === 'close') {
@@ -298,6 +305,11 @@
     var f = ev.target && ev.target.dataset && ev.target.dataset.f; if (!f) return;
     var e = byId(editId); if (!e) return;
     e[f] = ev.target.type === 'checkbox' ? ev.target.checked : ev.target.value;
+    if (f === 'date' || f === 'endDate') {   // the last day follows the first day unless it is later; it can never be earlier
+      var ed = document.getElementById('f-enddate');
+      if (!L.validDate(e.endDate) || e.endDate <= e.date) e.endDate = '';
+      if (ed) { ed.value = endShown(e); if (L.validDate(e.date)) ed.min = e.date; else ed.removeAttribute('min'); }
+    }
     if (status) { status = ''; var m = root.querySelector('.msg'); if (m) m.remove(); }
     refreshBar();
   });

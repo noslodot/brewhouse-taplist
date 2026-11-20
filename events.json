@@ -178,110 +178,6 @@
    "featured": true
   },
   {
-   "id": "e-shoestring-circus-20270709",
-   "title": "Shoestring Circus",
-   "date": "2027-07-09",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
-   "id": "e-shoestring-circus-20270710",
-   "title": "Shoestring Circus",
-   "date": "2027-07-10",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
-   "id": "e-shoestring-circus-20270711",
-   "title": "Shoestring Circus",
-   "date": "2027-07-11",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
-   "id": "e-shoestring-circus-20270714",
-   "title": "Shoestring Circus",
-   "date": "2027-07-14",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
-   "id": "e-shoestring-circus-20270715",
-   "title": "Shoestring Circus",
-   "date": "2027-07-15",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
-   "id": "e-shoestring-circus-20270716",
-   "title": "Shoestring Circus",
-   "date": "2027-07-16",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
-   "id": "e-shoestring-circus-20270717",
-   "title": "Shoestring Circus",
-   "date": "2027-07-17",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
-   "id": "e-shoestring-circus-20270718",
-   "title": "Shoestring Circus",
-   "date": "2027-07-18",
-   "start": "",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "Shoestring Circus",
-   "cost": "Paid admission",
-   "desc": "",
-   "img": "",
-   "featured": true
-  },
-  {
    "id": "e-wrestling-on-the-farm-20270612",
    "title": "Wrestling on the Farm",
    "date": "2027-06-12",
@@ -382,7 +278,35 @@
    "cost": "Free",
    "desc": "",
    "img": ""
+  },
+  {
+   "id": "e-shoestring-circus-20270709",
+   "title": "Shoestring Circus",
+   "date": "2027-07-09",
+   "start": "",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "Shoestring Circus",
+   "cost": "Paid admission",
+   "desc": "",
+   "img": "",
+   "featured": true,
+   "endDate": "2027-07-11"
+  },
+  {
+   "id": "e-shoestring-circus-20270714",
+   "title": "Shoestring Circus",
+   "date": "2027-07-14",
+   "start": "",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "Shoestring Circus",
+   "cost": "Paid admission",
+   "desc": "",
+   "img": "",
+   "featured": true,
+   "endDate": "2027-07-18"
   }
  ],
- "updated": "2026-11-20T21:17:10.000Z"
+ "updated": "2026-11-20T21:22:54.000Z"
 }
