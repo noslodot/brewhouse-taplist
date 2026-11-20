@@ -185,7 +185,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -198,7 +198,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -211,7 +211,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -224,7 +224,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -237,7 +237,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -250,7 +250,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -263,7 +263,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -276,7 +276,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "Shoestring Circus",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -289,7 +289,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -302,7 +302,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Paid admission",
    "desc": "",
    "img": "",
    "featured": true
@@ -315,7 +315,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Free",
    "desc": "",
    "img": "",
    "featured": true
@@ -328,7 +328,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Free",
    "desc": "",
    "img": "",
    "featured": true
@@ -341,7 +341,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Free",
    "desc": "",
    "img": "",
    "featured": true
@@ -354,7 +354,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Free",
    "desc": "",
    "img": "",
    "featured": true
@@ -367,7 +367,7 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Free",
    "desc": "",
    "img": ""
   },
@@ -379,10 +379,10 @@
    "end": "",
    "place": "McMillin Farm, 12517 WA-162, Puyallup",
    "host": "",
-   "cost": "",
+   "cost": "Free",
    "desc": "",
    "img": ""
   }
  ],
- "updated": "2026-11-20T21:10:45.000Z"
+ "updated": "2026-11-20T21:17:10.000Z"
 }
