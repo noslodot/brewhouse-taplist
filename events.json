@@ -51,7 +51,91 @@
    "cost": "Free",
    "desc": "Free admission, free parking and free entertainment. Bring the whole family!\nThis year’s theme is Italy, and you can come vote on next year’s country.\n12 vendors of Christmas will be selling great holiday gifts.\nThe Tahoma Troupe, a hand bell group, will perform holiday music.\nKrampus and Santa & Mrs. Claus will be there for photo ops.\nThe Brewhouse will be open for all your beverage needs.\nThree fully decorated Christmas trees and three weekend getaway packages will be raffled off to support Celebrate HARVEST again this year.\nCome enjoy this affordable family event and get into the Christmas spirit.",
    "img": "events-img/market-2026.jpg"
+  },
+  {
+   "id": "e-alderton-20261121",
+   "title": "A Very Merry Alderton Christmas",
+   "date": "2026-11-21",
+   "start": "10:00",
+   "end": "13:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "",
+   "cost": "$15/person, 4 and under are free",
+   "desc": "Fundraiser for the Alderton General Store.\nSanta photos\nHot cocoa & cookies\nChristmas crafts for the kids\nThe brewery will be open.",
+   "img": "events-img/alderton-christmas-2026.jpg"
+  },
+  {
+   "id": "e-seahawks-20261129",
+   "title": "Seahawks vs. 49ers",
+   "date": "2026-11-29",
+   "start": "13:25",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
+   "img": ""
+  },
+  {
+   "id": "e-seahawks-20261207",
+   "title": "Seahawks vs. Cowboys",
+   "date": "2026-12-07",
+   "start": "17:15",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
+   "img": ""
+  },
+  {
+   "id": "e-seahawks-20261213",
+   "title": "Seahawks vs. Giants",
+   "date": "2026-12-13",
+   "start": "13:25",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
+   "img": ""
+  },
+  {
+   "id": "e-seahawks-20261219",
+   "title": "Seahawks vs. Eagles",
+   "date": "2026-12-19",
+   "start": "14:00",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
+   "img": ""
+  },
+  {
+   "id": "e-seahawks-20261225",
+   "title": "Seahawks vs. Rams",
+   "date": "2026-12-25",
+   "start": "17:15",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
+   "img": ""
+  },
+  {
+   "id": "e-seahawks-20270103",
+   "title": "Seahawks vs. Panthers",
+   "date": "2027-01-03",
+   "start": "10:00",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
+   "img": ""
   }
  ],
- "updated": "2026-11-19T18:00:00.000Z"
+ "updated": "2026-11-20T07:36:02.000Z"
 }
