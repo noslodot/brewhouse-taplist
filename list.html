@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>On Tap | McMillin Farm Brewhouse</title>
+<link rel="icon" type="image/png" href="icon-192.png">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#3a0808;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-text-size-adjust:100%}
+.wrap{max-width:1000px;margin:0 auto;padding:20px 16px 28px}
+.title{margin:0;text-align:center;font-size:26px;line-height:1.15;font-weight:700}
+.price{margin:6px 0 0;text-align:center;font-size:15px;color:#e6bd7c}
+.hd{margin-bottom:8px}
+h2{margin:22px 0 4px;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#e6bd7c;border-bottom:2px solid rgba(255,255,255,.55);padding-bottom:6px}
+.cols{column-gap:44px}
+@media (min-width:760px){.cols{-webkit-column-count:2;column-count:2}}
+.item{display:-webkit-flex;display:flex;justify-content:space-between;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(255,255,255,.16);-webkit-column-break-inside:avoid;break-inside:avoid}
+.l{min-width:0;-webkit-flex:1;flex:1}
+.name{font-size:20px;font-weight:600;line-height:1.2}
+.sub{margin-top:2px;font-size:14px;color:#e6bd7c;line-height:1.3}
+.abv{-webkit-flex:none;flex:none;margin-left:16px;font-size:17px;white-space:nowrap;font-variant-numeric:tabular-nums;padding-top:2px}
+.new{display:inline-block;margin-left:8px;vertical-align:2px;background:#e6bd7c;color:#3a0808;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.gh{display:-webkit-flex;display:flex;align-items:center;margin:26px 0 2px;padding-bottom:8px;border-bottom:2px solid rgba(255,255,255,.55)}
+.gh img{max-height:46px;max-width:200px;object-fit:contain;margin-right:14px}
+.gh .wm{font-family:Georgia,"Times New Roman",serif;font-size:28px;font-weight:700;color:#d8c46a;margin-right:14px}
+.gh .gl{font-size:16px}
+.msg{padding:30px 0;text-align:center;color:#e6bd7c;font-size:17px}
+.upd{margin-top:22px;text-align:center;font-size:12px;color:rgba(255,255,255,.6)}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap"><div class="msg">Loading the tap list&hellip;</div></div>
+<script src="slide.js"></script>
+<script>
+(function () {
+  var POLL_MS = 2 * 60 * 1000;
+  var EMBED = /[?&]embed=1(&|$)/.test(location.search);   // embed=1 hides the big title (the website supplies its own heading)
+  var wrap = document.getElementById('wrap');
+  var esc = Slide.esc, fmtAbv = Slide.fmtAbv, beerById = Slide.beerById, isNew = Slide.isNew;
+  var lastText = '', data = null;
+
+  function row(name, sub, abv, nw) {
+    return '<div class="item"><div class="l"><div class="name">' + esc(name) +
+      (nw ? '<span class="new">New on tap</span>' : '') + '</div>' +
+      (sub ? '<div class="sub">' + esc(sub) + '</div>' : '') + '</div>' +
+      (abv ? '<div class="abv">' + esc(abv) + '</div>' : '') + '</div>';
+  }
+
+  function html(s) {
+    var beers = s.tap.map(function (t) {
+      var b = beerById(s, t.id);
+      if (!b) return '';
+      var showStyle = b.style && String(b.style).toLowerCase() !== String(b.name).toLowerCase();
+      var sub = [showStyle ? b.style : '', b.note].filter(Boolean).join(' · ');
+      return row(b.name, sub, fmtAbv(t.abv), isNew(t));
+    }).filter(Boolean).join('');
+
+    var out = '';
+    if (!EMBED) {
+      out += '<div class="hd"><h1 class="title">' + esc(s.settings.title) + '</h1>' +
+        (s.settings.priceLine ? '<p class="price">' + esc(s.settings.priceLine) + '</p>' : '') + '</div>';
+    } else if (s.settings.priceLine) {
+      out += '<p class="price" style="margin-top:0">' + esc(s.settings.priceLine) + '</p>';
+    }
+    out += '<h2>On tap</h2>';
+    out += beers ? '<div class="cols">' + beers + '</div>' : '<div class="msg">No beers listed right now.</div>';
+
+    s.groups.forEach(function (g) {
+      var items = g.items.filter(function (i) { return i.on; });
+      if (!items.length) return;
+      out += '<div class="gh">' + (g.logo ? '<img src="' + esc(g.logo) + '" alt="' + esc(g.title) + '">' : '<span class="wm">' + esc(g.title) + '</span>') +
+        (g.sub ? '<span class="gl">' + esc(g.sub) + '</span>' : '') + '</div>';
+      out += '<div class="cols">' + items.map(function (i) { return row(i.name, '', fmtAbv(i.abv), false); }).join('') + '</div>';
+    });
+
+    if (s.updated) {
+      var d = new Date(s.updated);
+      if (!isNaN(d.getTime())) out += '<div class="upd">Updated ' + esc(d.toLocaleString([], { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })) + '</div>';
+    }
+    return out;
+  }
+
+  // Tell a page that embeds us how tall we are, so it can size the frame (optional on their side).
+  function postHeight() {
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'taplist-height', height: document.body.offsetHeight }, '*');
+      }
+    } catch (e) {}
+  }
+  function draw() {
+    if (!data) return;
+    wrap.innerHTML = html(data);
+    postHeight();
+  }
+  function load() {
+    var x = new XMLHttpRequest();
+    x.open('GET', 'data.json?t=' + Date.now(), true);
+    x.onload = function () {
+      if (x.status !== 200) { if (!data) wrap.innerHTML = '<div class="msg">Could not load the tap list. Please try again in a moment.</div>'; return; }
+      try {
+        if (x.responseText !== lastText) { data = JSON.parse(x.responseText); lastText = x.responseText; }
+        draw();   // redraw each time so "New on tap" tags expire on their own
+      } catch (e) { if (!data) wrap.innerHTML = '<div class="msg">Could not load the tap list. Please try again in a moment.</div>'; }
+    };
+    x.onerror = function () { if (!data) wrap.innerHTML = '<div class="msg">Could not load the tap list. Please check your connection.</div>'; };
+    x.send();
+  }
+  window.addEventListener('resize', postHeight);
+  load();
+  setInterval(load, POLL_MS);
+})();
+</script>
+</body>
+</html>
