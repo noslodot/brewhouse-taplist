@@ -66,7 +66,7 @@
   },
   {
    "id": "e-seahawks-20261129",
-   "title": "Seahawks vs. 49ers",
+   "title": "Seahawks at 49ers",
    "date": "2026-11-29",
    "start": "13:25",
    "end": "",
@@ -102,7 +102,7 @@
   },
   {
    "id": "e-seahawks-20261219",
-   "title": "Seahawks vs. Eagles",
+   "title": "Seahawks at Eagles",
    "date": "2026-12-19",
    "start": "14:00",
    "end": "",
@@ -113,20 +113,8 @@
    "img": ""
   },
   {
-   "id": "e-seahawks-20261225",
-   "title": "Seahawks vs. Rams",
-   "date": "2026-12-25",
-   "start": "17:15",
-   "end": "",
-   "place": "McMillin Farm, 12517 WA-162, Puyallup",
-   "host": "McMillin Farm Brewhouse",
-   "cost": "",
-   "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
-   "img": ""
-  },
-  {
    "id": "e-seahawks-20270103",
-   "title": "Seahawks vs. Panthers",
+   "title": "Seahawks at Panthers",
    "date": "2027-01-03",
    "start": "10:00",
    "end": "",
@@ -135,7 +123,55 @@
    "cost": "",
    "desc": "Shown on the 20-foot screen.\n$5 pints during the game.",
    "img": ""
+  },
+  {
+   "id": "e-hotsauce-20270724",
+   "title": "Seventh Annual Washington State Hot Sauce Festival",
+   "date": "2027-07-24",
+   "start": "11:00",
+   "end": "18:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Two-day festival: Saturday July 24 and Sunday July 25.\nAll details at wahotsauce.com.",
+   "img": ""
+  },
+  {
+   "id": "e-hotsauce-20270725",
+   "title": "Seventh Annual Washington State Hot Sauce Festival",
+   "date": "2027-07-25",
+   "start": "11:00",
+   "end": "17:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "McMillin Farm Brewhouse",
+   "cost": "",
+   "desc": "Two-day festival: Saturday July 24 and Sunday July 25.\nAll details at wahotsauce.com.",
+   "img": ""
+  },
+  {
+   "id": "e-ssbf-20270828",
+   "title": "2nd Annual South Sound Brewers Fest",
+   "date": "2027-08-28",
+   "start": "",
+   "end": "",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "Celebrate HARVEST",
+   "cost": "",
+   "desc": "",
+   "img": ""
+  },
+  {
+   "id": "e-market-20271204",
+   "title": "McMillin Farm European Holiday Market",
+   "date": "2027-12-04",
+   "start": "11:00",
+   "end": "17:00",
+   "place": "McMillin Farm, 12517 WA-162, Puyallup",
+   "host": "Celebrate HARVEST",
+   "cost": "Free",
+   "desc": "Free admission, free parking and free entertainment. Bring the whole family!",
+   "img": ""
   }
  ],
- "updated": "2026-11-20T07:36:02.000Z"
+ "updated": "2026-11-20T07:44:26.000Z"
 }
